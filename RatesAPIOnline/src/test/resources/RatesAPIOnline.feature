@@ -18,7 +18,7 @@ Feature: To Test the RatesAPI online RESTFUL Service
   #------------------------------------------------------------------------
   @checkLatestMessage
   Scenario: To validate that latest message without filters has a response with base,rate and date
-    Given a request is created for latest rates without base value
+    Given a request is created for latest rates without filters
     When I execute the request
     Then response is present
     And the base value in the response is "EUR"
@@ -321,3 +321,16 @@ Feature: To Test the RatesAPI online RESTFUL Service
     And the rates are present
     And the base value in the response is "EUR"
     And the date is displayed
+
+  @checkPastRatesNotPresentByDate
+  Scenario Outline: To validate that rate for <member> is not present on <date>
+    Given a request is created for previous rates with date "9999-01-12"
+    When I execute the request
+    Then response is present
+    And the rates are present
+    And the base value in the response is "EUR"
+    And the date is displayed
+    And the member <member>, is not present
+
+    Examples: 
+      | member | date |

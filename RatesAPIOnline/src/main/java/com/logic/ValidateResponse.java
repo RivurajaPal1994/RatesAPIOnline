@@ -14,6 +14,8 @@ import com.exception.CustomException;
 
 public class ValidateResponse {
 
+	static JSONParser parser = new JSONParser();
+
 	/**
 	 * This method returns the base Currency from the JSON response
 	 * 
@@ -24,53 +26,81 @@ public class ValidateResponse {
 	public static String getBaseCurrency(String response) throws CustomException {
 		try {
 
-			JSONParser parser = new JSONParser();
 			JSONObject jsonObjects = (JSONObject) parser.parse(response);
 			return jsonObjects.get("base").toString();
+		} catch (NullPointerException e) {
+			throw new CustomException("Null value passed in response",e);
+			
 		} catch (Exception e) {
 			throw new CustomException("Unable to parse JSON Response object", e);
 		}
 
 	}
 
+	/**
+	 * This method validates a member from the response rates for a specific value
+	 * 
+	 * @param response
+	 * @param member
+	 * @param value
+	 * @return
+	 * @throws CustomException
+	 */
 	public static Object checkRateForMemberValue(String response, String member, String value) throws CustomException {
 		try {
-
-			JSONParser parser = new JSONParser();
 
 			JSONObject jsonObjects = (JSONObject) parser.parse(response);
 
 			JSONObject allRates = (JSONObject) parser.parse(jsonObjects.get("rates").toString());
 
 			String valueResp = allRates.get(member).toString();
-			
+
 			if (valueResp.equals(value))
 				return true;
 			else
 				return false;
 
+		} catch (NullPointerException e) {
+			throw new CustomException("Null value passed in response",e);
+			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			
 			throw new CustomException("Unable to parse JSON Response object", e);
 		}
 	}
 
+	/**
+	 * This method validates whether rates are present
+	 * 
+	 * @param responseBody
+	 * @return
+	 * @throws CustomException
+	 */
 	public static boolean validateRatesPresent(String responseBody) throws CustomException {
-		JSONParser parser = new JSONParser();
 
 		JSONObject jsonObjects;
 		try {
 			jsonObjects = (JSONObject) parser.parse(responseBody);
 			JSONObject allRates = (JSONObject) parser.parse(jsonObjects.get("rates").toString());
-			
+
 			return (!Objects.isNull(allRates));
+		} catch (NullPointerException e) {
+			throw new CustomException("Null value passed in response",e);
+			
 		} catch (ParseException e) {
 			throw new CustomException("Unable to parse JSON response");
 		}
 
 	}
 
+	/**
+	 * This method validates the date present in response to the request sent
+	 * 
+	 * @param responseBody
+	 * @param dateReq
+	 * @return
+	 * @throws CustomException
+	 */
 	public static boolean validateDate(String responseBody, String dateReq) throws CustomException {
 		String date = null;
 		if ("today".equals(dateReq)) {
@@ -83,7 +113,7 @@ public class ValidateResponse {
 			else
 				throw new CustomException("Invalid Date value passed in Request");
 		}
-		JSONParser parser = new JSONParser();
+
 		JSONObject jsonObjects;
 		try {
 			jsonObjects = (JSONObject) parser.parse(responseBody);
@@ -91,14 +121,23 @@ public class ValidateResponse {
 			String dateResp = jsonObjects.get("date").toString();
 
 			return dateResp.equals(date);
+		} catch (NullPointerException e) {
+			throw new CustomException("Null value passed",e);
+			
 		} catch (ParseException e) {
 			throw new CustomException("Unable to parse JSON response");
 		}
 	}
-	
+
+	/**
+	 * This method validates if date is present or not
+	 * 
+	 * @param responseBody
+	 * @return
+	 * @throws CustomException
+	 */
 	public static boolean validateDate(String responseBody) throws CustomException {
-		
-		JSONParser parser = new JSONParser();
+
 		JSONObject jsonObjects;
 		try {
 			jsonObjects = (JSONObject) parser.parse(responseBody);
@@ -106,15 +145,26 @@ public class ValidateResponse {
 			String dateResp = jsonObjects.get("date").toString();
 
 			return (!Objects.isNull(dateResp));
+		} catch (NullPointerException e) {
+			throw new CustomException("Null value passed in response",e);
+			
 		} catch (ParseException e) {
 			throw new CustomException("Unable to parse JSON response");
 		}
 	}
 
+	/**
+	 * This method validates and returns true if rates are not present in the
+	 * response body
+	 * 
+	 * @param responseBody
+	 * @return
+	 * @throws CustomException
+	 */
 	public static boolean validateRatesNotPresent(String responseBody) throws CustomException {
 
 		try {
-			JSONParser parser = new JSONParser();
+
 			JSONObject jsonObjects = (JSONObject) parser.parse(responseBody);
 			jsonObjects.get("base").toString();
 			return false;
@@ -127,15 +177,52 @@ public class ValidateResponse {
 
 	}
 
-	public static boolean validateErrorMessageDisplayed(String responseBody, String member) throws CustomException {
+	/**
+	 * Validates whether error message is displayed with a specifc substring element
+	 * 
+	 * @param responseBody
+	 * @param member
+	 * @return
+	 * @throws CustomException
+	 */
+	public static boolean validateErrorMessageDisplayed(String responseBody, String element) throws CustomException {
 		try {
-			JSONParser parser = new JSONParser();
+
 			JSONObject jsonObjects = (JSONObject) parser.parse(responseBody);
 			String value = jsonObjects.get("error").toString();
-			return value.contains(member);
+			return value.contains(element);
 
+		} catch (NullPointerException e) {
+			throw new CustomException("Null value passed in response",e);
+			
 		} catch (Exception e) {
 			throw new CustomException(e);
+		}
+	}
+
+	/**
+	 * Checks if member value is not present in the rates of response body
+	 * 
+	 * @param responseBody
+	 * @param member
+	 * @return
+	 */
+	public static Object checkRateForMemberValueNotPresent(String responseBody, String member) {
+		try {
+
+			JSONObject jsonObjects = (JSONObject) parser.parse(responseBody);
+
+			JSONObject allRates = (JSONObject) parser.parse(jsonObjects.get("rates").toString());
+
+			String valueResp = allRates.get(member).toString();
+
+			if (Objects.isNull(valueResp))
+				return true;
+			else
+				return false;
+
+		} catch (Exception e) {
+			return true;
 		}
 	}
 
