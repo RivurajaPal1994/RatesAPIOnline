@@ -1,5 +1,7 @@
 #Author: Rivuraja Pal
 #TestingScope
+#Latest Rates with 4 combinations
+#Past Rates with 4 combination
 #-------------------------------------------------------------------------
 #OutOfScope
 #Special Characters parsing -->  / \b ^%$ etc...
