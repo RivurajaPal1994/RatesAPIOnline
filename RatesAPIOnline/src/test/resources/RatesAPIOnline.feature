@@ -25,7 +25,7 @@ Feature: To Test the RatesAPI online RESTFUL Service
     And the rates are present
     And the date is displayed
 
-  @checkAllLatestRates_
+  @checkAllLatestRates
   Scenario Outline: To validate the rate is displayed for <member>
     Given a request is created for latest rates without base value
     When I execute the request
