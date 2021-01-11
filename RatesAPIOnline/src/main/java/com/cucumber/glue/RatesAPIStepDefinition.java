@@ -18,7 +18,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class StepDefinition {
+public class RatesAPIStepDefinition {
 	private static HttpClient client = null;
 	private static HttpGet query = null;
 	private static HttpResponse response = null;

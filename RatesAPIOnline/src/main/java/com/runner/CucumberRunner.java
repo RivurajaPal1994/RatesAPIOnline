@@ -7,7 +7,7 @@ import io.cucumber.junit.CucumberOptions;
 
 
 @RunWith(Cucumber.class)
-@CucumberOptions(glue = "com.cucumber.glue", features = "src/test/resources",strict = true,tags="@checkPastRatesWithBaseAndSymbol")
+@CucumberOptions(glue = "com.cucumber.glue", features = "src/test/resources/features",strict = true,tags="@checkPastRatesWithBaseAndSymbol")
 public class CucumberRunner {
 
 }
